@@ -13,6 +13,7 @@
  * @version April 2012
  */
 public class Magpie2 {
+	public Magpie2(){};
 	/**
 	 * Get a default greeting
 	 * 
@@ -33,11 +34,24 @@ public class Magpie2 {
 		String response = "";
 		if (statement.indexOf("no") >= 0) {
 			response = "Why so negative?";
+		} else if (statement.indexOf("cat") >= 0
+		|| statement.indexOf("dog") >= 0) {
+	response = "Tell me more about your Pets.";
 		} else if (statement.indexOf("mother") >= 0
 				|| statement.indexOf("father") >= 0
 				|| statement.indexOf("sister") >= 0
 				|| statement.indexOf("brother") >= 0) {
 			response = "Tell me more about your family.";
+		}else if (statement.indexOf("teacher") >= 0) {
+			if (statement.indexOf("Mr.") >= 0){
+				response = "He sounds like a good teacher.";
+			}
+			if (statement.indexOf("Mrs.") >= 0){
+				response = "She sounds like a good Teacher.";
+			}else{
+				response = "Tell me more about your Teacher.";
+			}
+				
 		} else {
 			response = getRandomResponse();
 		}
