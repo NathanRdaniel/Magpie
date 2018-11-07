@@ -29,13 +29,18 @@ public class Magpie3 {
 		String response = "";
 		if (statement.length() == 0) {
 			response = "Say something, please.";
-		} else if (findKeyword(statement, "no") >= 0) {
+		} else if (findKeyword(statement, "no",0) >= 0) {
 			response = "Why so negative?";
-		} else if (findKeyword(statement, "mother") >= 0
-				|| findKeyword(statement, "father") >= 0
-				|| findKeyword(statement, "sister") >= 0
-				|| findKeyword(statement, "brother") >= 0) {
+		} else if (findKeyword(statement, "mother", 0) >= 0
+				|| findKeyword(statement, "father",0) >= 0
+				|| findKeyword(statement, "sister",0) >= 0
+				|| findKeyword(statement, "brother",0) >= 0) {
 			response = "Tell me more about your family.";
+		} else if (findKeyword(statement, "dog", 0) >= 0
+		|| findKeyword(statement, "cat",0) >= 0
+		|| findKeyword(statement, "lion",0) >= 0
+		|| findKeyword(statement, "Bear",0) >= 0) {
+	response = "Tell me more about your pets.";
 		} else {
 			response = getRandomResponse();
 		}
@@ -111,9 +116,7 @@ public class Magpie3 {
 	 * @return the index of the first occurrence of goal in statement or -1 if
 	 *         it's not found
 	 */
-	private int findKeyword(String statement, String goal) {
-		return findKeyword(statement, goal, 0);
-	}
+	
 
 	/**
 	 * Pick a default response to use if nothing else fits.
