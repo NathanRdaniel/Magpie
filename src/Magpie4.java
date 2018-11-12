@@ -47,13 +47,26 @@ public class Magpie4 {
 		else if (findKeyword(statement, "I want to", 0) >= 0) {
 			response = transformIWantToStatement(statement);
 		}
+		else if (findKeyword(statement, "I want", 0)>= 0){
+			response = transformIWantStatement(statement);
+		}
+		else if (findKeyword(statement, "how do I", 0)>= 0){
+			response = transformHowDoIStatement(statement);
+		}
+		else if (findKeyword(statement, "how do You", 0)>= 0){
+			response = transformHowDoYouStatement(statement);
+		}
+		else if (findKeyword(statement, "Give me a number", 0)>= 0){
+			response = transformRandomNumStatement(statement);
+		}
+
 
 		else {
 			// Look for a two word (you <something> me)
 			// pattern
-			int psn = findKeyword(statement, "you", 0);
+			int psn = findKeyword(statement, "i", 0);
 
-			if (psn >= 0 && findKeyword(statement, "me", psn) >= 0) {
+			if (psn >= 0 && findKeyword(statement, "you", psn) >= 0) {
 				response = transformYouMeStatement(statement);
 			} else {
 				response = getRandomResponse();
@@ -81,7 +94,16 @@ public class Magpie4 {
 		String restOfStatement = statement.substring(psn + 9).trim();
 		return "What would it mean to " + restOfStatement + "?";
 	}
-
+	private String transformIWantStatement(String statement){
+		statement = statement.trim();
+		String lastChar = statement.substring(statement.length() - 1);
+		if (lastChar.equals(".")){
+			statement = statement.substring(0, statement.length() - 1);
+		}
+		int psn = findKeyword(statement, "I want", 0);
+		String restOfStatement = statement.substring(psn + 6).trim();
+		return "Would you really be happy if you had" + restOfStatement + "?";
+	}
 	/**
 	 * Take a statement with "you <something> me" and transform it into
 	 * "What makes you think that I <something> you?"
@@ -98,13 +120,41 @@ public class Magpie4 {
 			statement = statement.substring(0, statement.length() - 1);
 		}
 
-		int psnOfYou = findKeyword(statement, "you", 0);
-		int psnOfMe = findKeyword(statement, "me", psnOfYou + 3);
+		int psnOfI = findKeyword(statement, "i", 0);
+		int psnOfYou = findKeyword(statement, "you", psnOfI + 2);
 
-		String restOfStatement = statement.substring(psnOfYou + 3, psnOfMe)
+		String restOfStatement = statement.substring(psnOfI+ 2, psnOfYou)
 				.trim();
-		return "What makes you think that I " + restOfStatement + " you?";
+		return "Why do you " + restOfStatement + " me?";
 	}
+		private String transformHowDoIStatement(String statement) {
+
+		statement = statement.trim();
+		String lastChar = statement.substring(statement.length() - 1);
+		if (lastChar.equals(".") || lastChar.equals("?")) {
+		statement = statement.substring(0 , statement.length()-1);
+		}
+		int psnOfHow = findKeyword(statement,"How do I",0);
+		String restofStatement = statement.substring(psnOfHow + 8).trim();
+		return "I think that google will have an idea on how you do " + restofStatement;	
+	}
+	private String transformHowDoYouStatement(String statement) {
+
+		statement = statement.trim();
+		String lastChar = statement.substring(statement.length() - 1);
+		if (lastChar.equals(".") || lastChar.equals("?")) {
+		statement = statement.substring(0 , statement.length()-1);
+		}
+		int psnOfHow = findKeyword(statement,"How do You",0);
+		String restofStatement = statement.substring(psnOfHow + 10).trim();
+		return "I sdont have an idea on how I " + restofStatement;	
+	}
+	private String transformRandomNumStatement(String statement) {
+		double r = Math.random();
+		String numberAsString = Double.toString(r);
+		return numberAsString;
+	}
+
 
 	/**
 	 * Search for one word in phrase. The search is not case sensitive. This
@@ -185,7 +235,7 @@ public class Magpie4 {
 	 * @return a non-committal string
 	 */
 	private String getRandomResponse() {
-		final int NUMBER_OF_RESPONSES = 4;
+		final int NUMBER_OF_RESPONSES = 7;
 		double r = Math.random();
 		int whichResponse = (int) (r * NUMBER_OF_RESPONSES);
 		String response = "";
@@ -198,6 +248,15 @@ public class Magpie4 {
 			response = "Do you really think so?";
 		} else if (whichResponse == 3) {
 			response = "You don't say.";
+		}
+		else if (whichResponse == 4) {
+			response = "Tell mt more.";
+		}
+		else if (whichResponse == 5) {
+			response = "Can you say that again?";
+		}
+		else if (whichResponse == 6) {
+			response = "when the world gets blown up by nuclear warfare, Do you think that the jungle tribes will take over and we will have jungle warfare?";
 		}
 
 		return response;
